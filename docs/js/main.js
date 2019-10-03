@@ -52,6 +52,8 @@ if ('ontouchstart' in window) {
 
     // video からテクスチャを生成
     //1.textureをnewしてvideoを渡す 
+    texture = new THREE.Texture( video );
+
     texture.generateMipmaps = false;
     texture.minFilter = THREE.NearestFilter;
     texture.maxFilter = THREE.NearestFilter;
@@ -68,13 +70,20 @@ if ('ontouchstart' in window) {
     camera = new THREE.PerspectiveCamera( 75, container.innerWidth / container.innerHeight, 1, 2000 );
 
     // 2.シーンを生成
-    
+    scene = new THREE.Scene();
     
     // 球体を作成し、テクスチャに video を元にして生成したテクスチャを設定します
     // 3. 球体を生成する。半径500、幅60、高さ40に設定し、geometryという名前の変数に格納する。
+    var geometry = new THREE.SphereBufferGeometry( 500, 60, 40 );
+
     // 4. 3.で作った球体のスケールを（-1,1,1）に設定する
+    geometry.scale( -1, 1, 1 );
+
     // 5. 作成した球体に1.で作ったtextureを貼り付けmeshという名前の変数に格納する。
+    var mesh = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { map: texture } ) );
+
     // 6. 2.で作成したシーンに5.で作成したmeshを追加する
+    scene.add( mesh );
 
     // レンダラーを生成
     renderer = new THREE.WebGLRenderer();
