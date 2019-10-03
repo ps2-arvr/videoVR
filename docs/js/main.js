@@ -38,13 +38,20 @@ if ('ontouchstart' in window) {
       video.src = select.value;
       video.play();
     } );
-    
+    //URLパラメータ文字を取得する。
+    var param = location.search
+    param = param.replace("?", ""); //?を取り除く
+
     // video 要素を生成
     video = document.createElement( 'video' );
     video.crossOrigin = 'anonymous';
     video.loop = true;
     video.muted = true;
-    video.src = './video/BavarianAlps.mp4';
+    if (param == 'CrystalShower'){
+	video.src = './video/CrystalShower.mp4';
+   }else{
+        video.src = './video/BavarianAlps.mp4';
+   }
     video.setAttribute( 'webkit-playsinline', 'webkit-playsinline' );
     video.setAttribute( 'playsinline', 'playsinline' );
     video.setAttribute( 'muted', 'muted' );
