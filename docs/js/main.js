@@ -45,7 +45,7 @@ if ('ontouchstart' in window) {
     video.crossOrigin = 'anonymous';
     video.loop = true;
     video.muted = true;
-    video.src = 'video/BavarianAlps.mp4';
+    video.src = './video/BavarianAlps.mp4';
     video.setAttribute( 'webkit-playsinline', 'webkit-playsinline' );
     video.setAttribute( 'playsinline', 'playsinline' );
     video.setAttribute( 'muted', 'muted' );
