@@ -1,5 +1,4 @@
 //イベントの振り分け
-
 var EVENT = {};
 if ('ontouchstart' in window) {
   EVENT.TOUCH_START = 'touchstart';
@@ -51,13 +50,13 @@ if ('ontouchstart' in window) {
     video.setAttribute( 'muted', 'muted' );
     video.play();
 
-
     // video からテクスチャを生成
-    texture = new THREE.Texture( video );
+    //1.textureをnewしてvideoを渡す 
     texture.generateMipmaps = false;
     texture.minFilter = THREE.NearestFilter;
     texture.maxFilter = THREE.NearestFilter;
     texture.format = THREE.RGBFormat;
+
     // 動画に合わせてテクスチャを更新
     setInterval( function () {
       if ( video.readyState >= video.HAVE_CURRENT_DATA ) {
@@ -68,14 +67,14 @@ if ('ontouchstart' in window) {
     // カメラを生成
     camera = new THREE.PerspectiveCamera( 75, container.innerWidth / container.innerHeight, 1, 2000 );
 
-    // シーンを生成
-    scene = new THREE.Scene();
+    // 2.シーンを生成
+    
     
     // 球体を作成し、テクスチャに video を元にして生成したテクスチャを設定します
-    var geometry = new THREE.SphereBufferGeometry( 500, 60, 40 );
-    geometry.scale( - 1, 1, 1 );
-    var mesh = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { map: texture } ) );
-    scene.add( mesh );
+    // 3. 球体を生成する。半径500、幅60、高さ40に設定し、geometryという名前の変数に格納する。
+    // 4. 3.で作った球体のスケールを（-1,1,1）に設定する
+    // 5. 作成した球体に1.で作ったtextureを貼り付けmeshという名前の変数に格納する。
+    // 6. 2.で作成したシーンに5.で作成したmeshを追加する
 
     // レンダラーを生成
     renderer = new THREE.WebGLRenderer();
