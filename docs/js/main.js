@@ -1,6 +1,4 @@
 //イベントの振り分け
-var param = location.search　//パラメータを取得 
-alert(param)　//画面にパラメータを表示 
 
 var EVENT = {};
 if ('ontouchstart' in window) {
