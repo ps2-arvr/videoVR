@@ -1,4 +1,4 @@
-//ƒCƒxƒ“ƒg‚ÌU‚è•ª‚¯
+//ã‚¤ãƒ™ãƒ³ãƒˆã®æŒ¯ã‚Šåˆ†ã‘
 var EVENT = {};
 if ('ontouchstart' in window) {
   EVENT.TOUCH_START = 'touchstart';
@@ -12,7 +12,7 @@ if ('ontouchstart' in window) {
 
 (function () {
 
-  // •Ï”‚Ì‰Šú‰»
+  // å¤‰æ•°ã®åˆæœŸåŒ–
   var camera, scene, renderer, video, texture, container;
   var fov = 60,
   isUserInteracting = false,
@@ -26,7 +26,7 @@ if ('ontouchstart' in window) {
 
   function init() {
 
-    // ƒRƒ“ƒeƒi‚Ì€”õ
+    // ã‚³ãƒ³ãƒ†ãƒŠã®æº–å‚™
     container = document.getElementById( 'canvas-frame' );
 
     container.addEventListener( 'click', function () {
@@ -38,16 +38,16 @@ if ('ontouchstart' in window) {
       video.src = select.value;
       video.play();
     } );
-    //URLƒpƒ‰ƒ[ƒ^•¶š‚ğæ“¾‚·‚éB
+    //URLãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿æ–‡å­—ã‚’å–å¾—ã™ã‚‹ã€‚
     var param = location.search
-    param = param.replace("?", ""); //?‚ğæ‚èœ‚­
+    param = param.replace("?", ""); //?ã‚’å–ã‚Šé™¤ã
 
-    // video —v‘f‚ğ¶¬
+    // video è¦ç´ ã‚’ç”Ÿæˆ
     video = document.createElement( 'video' );
     video.crossOrigin = 'anonymous';
     video.loop = true;
     video.muted = true;
-    if (param == 'CrystalShower'){
+    if (param == "CrystalShower"){
 	video.src = './video/CrystalShower.mp4';
    }else{
         video.src = './video/BavarianAlps.mp4';
@@ -57,8 +57,8 @@ if ('ontouchstart' in window) {
     video.setAttribute( 'muted', 'muted' );
     video.play();
 
-    // video ‚©‚çƒeƒNƒXƒ`ƒƒ‚ğ¶¬
-    //1.texture‚ğnew‚µ‚Ävideo‚ğ“n‚· 
+    // video ã‹ã‚‰ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ç”Ÿæˆ
+    //1.textureã‚’newã—ã¦videoã‚’æ¸¡ã™ 
     texture = new THREE.Texture( video );
 
     texture.generateMipmaps = false;
@@ -66,42 +66,42 @@ if ('ontouchstart' in window) {
     texture.maxFilter = THREE.NearestFilter;
     texture.format = THREE.RGBFormat;
 
-    // “®‰æ‚É‡‚í‚¹‚ÄƒeƒNƒXƒ`ƒƒ‚ğXV
+    // å‹•ç”»ã«åˆã‚ã›ã¦ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’æ›´æ–°
     setInterval( function () {
       if ( video.readyState >= video.HAVE_CURRENT_DATA ) {
         texture.needsUpdate = true;
       }
     }, 1000 / 24 );
 
-    // ƒJƒƒ‰‚ğ¶¬
+    // ã‚«ãƒ¡ãƒ©ã‚’ç”Ÿæˆ
     camera = new THREE.PerspectiveCamera( 75, container.innerWidth / container.innerHeight, 1, 2000 );
 
-    // 2.ƒV[ƒ“‚ğ¶¬
+    // 2.ã‚·ãƒ¼ãƒ³ã‚’ç”Ÿæˆ
     scene = new THREE.Scene();
     
-    // ‹…‘Ì‚ğì¬‚µAƒeƒNƒXƒ`ƒƒ‚É video ‚ğŒ³‚É‚µ‚Ä¶¬‚µ‚½ƒeƒNƒXƒ`ƒƒ‚ğİ’è‚µ‚Ü‚·
-    // 3. ‹…‘Ì‚ğ¶¬‚·‚éB”¼Œa500A•60A‚‚³40‚Éİ’è‚µAgeometry‚Æ‚¢‚¤–¼‘O‚Ì•Ï”‚ÉŠi”[‚·‚éB
+    // çƒä½“ã‚’ä½œæˆã—ã€ãƒ†ã‚¯ã‚¹ãƒãƒ£ã« video ã‚’å…ƒã«ã—ã¦ç”Ÿæˆã—ãŸãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’è¨­å®šã—ã¾ã™
+    // 3. çƒä½“ã‚’ç”Ÿæˆã™ã‚‹ã€‚åŠå¾„500ã€å¹…60ã€é«˜ã•40ã«è¨­å®šã—ã€geometryã¨ã„ã†åå‰ã®å¤‰æ•°ã«æ ¼ç´ã™ã‚‹ã€‚
     var geometry = new THREE.SphereBufferGeometry( 500, 60, 40 );
 
-    // 4. 3.‚Åì‚Á‚½‹…‘Ì‚ÌƒXƒP[ƒ‹‚ği-1,1,1j‚Éİ’è‚·‚é
+    // 4. 3.ã§ä½œã£ãŸçƒä½“ã®ã‚¹ã‚±ãƒ¼ãƒ«ã‚’ï¼ˆ-1,1,1ï¼‰ã«è¨­å®šã™ã‚‹
     geometry.scale( -1, 1, 1 );
 
-    // 5. ì¬‚µ‚½‹…‘Ì‚É1.‚Åì‚Á‚½texture‚ğ“\‚è•t‚¯mesh‚Æ‚¢‚¤–¼‘O‚Ì•Ï”‚ÉŠi”[‚·‚éB
+    // 5. ä½œæˆã—ãŸçƒä½“ã«1.ã§ä½œã£ãŸtextureã‚’è²¼ã‚Šä»˜ã‘meshã¨ã„ã†åå‰ã®å¤‰æ•°ã«æ ¼ç´ã™ã‚‹ã€‚
     var mesh = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { map: texture } ) );
 
-    // 6. 2.‚Åì¬‚µ‚½ƒV[ƒ“‚É5.‚Åì¬‚µ‚½mesh‚ğ’Ç‰Á‚·‚é
+    // 6. 2.ã§ä½œæˆã—ãŸã‚·ãƒ¼ãƒ³ã«5.ã§ä½œæˆã—ãŸmeshã‚’è¿½åŠ ã™ã‚‹
     scene.add( mesh );
 
-    // ƒŒƒ“ƒ_ƒ‰[‚ğ¶¬
+    // ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã‚’ç”Ÿæˆ
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     container.appendChild( renderer.domElement );
 
-    // ƒhƒ‰ƒbƒOEƒXƒƒCƒv‘€ì‚ğİ’è
+    // ãƒ‰ãƒ©ãƒƒã‚°ãƒ»ã‚¹ãƒ¯ã‚¤ãƒ—æ“ä½œã‚’è¨­å®š
     container.addEventListener( EVENT.TOUCH_START, onDocumentMouseDown, false );
 
-    // ‰æ–Ê‚ÌƒŠƒTƒCƒY‚É‘Î‰
+    // ç”»é¢ã®ãƒªã‚µã‚¤ã‚ºã«å¯¾å¿œ
     window.addEventListener( 'resize', onWindowResize, false );
     onWindowResize( null );
   }
