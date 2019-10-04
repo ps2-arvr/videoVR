@@ -47,6 +47,7 @@ if ('ontouchstart' in window) {
     video.crossOrigin = 'anonymous';
     video.loop = true;
     video.muted = true;
+    //URLから取得したパラメータ(param)の内容によって、表示する動画を変更
     if (param == "CrystalShower"){
 	video.src = './video/CrystalShower.mp4';
    }else{
@@ -97,6 +98,8 @@ if ('ontouchstart' in window) {
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     container.appendChild( renderer.domElement );
+    //HMD用にエフェクトを実装
+    effect = new THREE.StereoEffect( renderer );
 
     // ドラッグ・スワイプ操作を設定
     container.addEventListener( EVENT.TOUCH_START, onDocumentMouseDown, false );
@@ -109,6 +112,7 @@ if ('ontouchstart' in window) {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize( window.innerWidth, window.innerHeight );
+    effect.setSize(window.innerWidth, window.innerHeight);
   }
   function onDocumentMouseDown( event ) {
     event.preventDefault();
@@ -158,6 +162,8 @@ if ('ontouchstart' in window) {
     camera.position.z = 100 * Math.sin( phi ) * Math.sin( theta );
     camera.lookAt( scene.position );
     renderer.render( scene, camera );
+    //下の一文をエフェクトに対応するため追加
+    effect.render( scene, camera );
   }
 
 })();
