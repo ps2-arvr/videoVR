@@ -94,14 +94,34 @@ if ('ontouchstart' in window) {
 
     // カメラを生成
     camera = new THREE.PerspectiveCamera( 75, container.innerWidth / container.innerHeight, 1, 2000 );
+    camera.position.set(0, 0, 0);
+    //scene.add(camera);
 
 
+window.addEventListener(
+  "deviceorientation",
+  setOrientationControls,
+  true
+);
 	// DeviceOrientationControlsインスタンス作成
-   var controls = new THREE.DeviceOrientationControls( camera , true);
-   controls.connect();
-   controls.update();
-
-
+   function setOrientationControls(e) {
+  //スマートフォン以外で処理させない
+  if (!e.alpha) {
+    return;
+  }
+  controls = new THREE.DeviceOrientationControls(
+    camera,
+    true
+  );
+  controls.connect();
+  controls.update();
+  window.removeEventListener(
+    "deviceorientation",
+    setOrientationControls,
+    true
+  );
+}
+   
     // 2.シーンを生成
     scene = new THREE.Scene();
     
@@ -148,13 +168,7 @@ if ('ontouchstart' in window) {
     // 画面のリサイズに対応
     window.addEventListener( 'resize', onWindowResize, false );
     onWindowResize( null );
-
-
  }
- 
-
-
-  
   function onWindowResize ( event ) {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -211,7 +225,7 @@ if ('ontouchstart' in window) {
     renderer.render( scene, camera );
     //下の一文をエフェクトに対応するため追加
     effect.render( scene, camera );
-	//controls.update();
+//	controls.update();
   }
 
   function update() {
