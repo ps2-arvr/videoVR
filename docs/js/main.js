@@ -145,6 +145,7 @@ if ('ontouchstart' in window) {
        	camera.position.y,
 	camera.position.z+0.1
     );
+    camera.lookAt(scene.position);
     controls.noZoom = true;
     controls.noPan = true;
 
@@ -219,6 +220,10 @@ if ('ontouchstart' in window) {
     renderer.setAnimationLoop( render );
   }
   function render() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    effect.setSize(window.innerWidth, window.innerHeight);
 　　controls.update();
     renderer.render( scene, camera );
     //下の一文をエフェクトに対応するため追加
