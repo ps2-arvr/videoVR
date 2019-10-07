@@ -95,7 +95,12 @@ if ('ontouchstart' in window) {
 
     // カメラを生成
     camera = new THREE.PerspectiveCamera( 75, container.innerWidth / container.innerHeight, 1, 2000 );
-    camera.position.set(0, 0, 0);
+    lat = Math.max( - 85, Math.min( 85, lat ) );
+    phi = THREE.Math.degToRad( 90 - lat );
+    theta = THREE.Math.degToRad( lon );
+    camera.position.x = 100 * Math.sin( phi ) * Math.cos( theta );
+    camera.position.y = 100 * Math.cos( phi );
+    camera.position.z = 100 * Math.sin( phi ) * Math.sin( theta );
     scene.add(camera);
     
     // 球体を作成し、テクスチャに video を元にして生成したテクスチャを設定します
@@ -214,10 +219,6 @@ if ('ontouchstart' in window) {
     renderer.setAnimationLoop( render );
   }
   function render() {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    effect.setSize(window.innerWidth, window.innerHeight);
 　　controls.update();
     renderer.render( scene, camera );
     //下の一文をエフェクトに対応するため追加
