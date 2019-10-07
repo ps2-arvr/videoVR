@@ -222,10 +222,10 @@ if ('ontouchstart' in window) {
     camera.position.z = 100 * Math.sin( phi ) * Math.sin( theta );
     camera.lookAt( scene.position );
 　  camera.updateProjectionMatrix();
+　　controls.update();
     renderer.render( scene, camera );
     //下の一文をエフェクトに対応するため追加
     effect.render( scene, camera );
-　　controls.update();
   }
 
   function update() {
