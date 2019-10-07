@@ -25,6 +25,7 @@ if ('ontouchstart' in window) {
   animate();
 	// DeviceOrientationControlsインスタンス作成
 var controls = new THREE.DeviceOrientationControls( camera );
+controls.connect();
 
 	 var loader = new THREE.TextureLoader();
 ////////////////////ホットスポット配置を試みる//////////////////
