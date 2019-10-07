@@ -23,41 +23,33 @@ if ('ontouchstart' in window) {
 
   init();
   animate();
-	// DeviceOrientationControlsインスタンス作成
-var controls = new THREE.DeviceOrientationControls( camera , true);
-controls.connect();
 
-	 var loader = new THREE.TextureLoader();
+   var loader = new THREE.TextureLoader();
 ////////////////////ホットスポット配置を試みる//////////////////
     loader.load("image/wifi.png", function(texture){
-        createBox(texture); // mesh作成
-        render();
+    createBox(texture); // mesh作成
+    render();
     });
-	 function createBox(texture){
-        box = new THREE.Mesh(
-            new THREE.PlaneGeometry(50, 50, 1,1),
-	    //new THREE.MeshLambertMaterial( { color: 0xf6cece } );
-            new THREE.MeshLambertMaterial({map: texture}));
-        box.position.set(0, 0, 0);
+    function createBox(texture){
+    box = new THREE.Mesh(
+    new THREE.PlaneGeometry(50, 50, 1,1),
+    new THREE.MeshLambertMaterial({map: texture}));
+    box.position.set(0, 0, 0);
 
-        // シーンに追加
-        scene.add(box);
+    // シーンに追加
+    scene.add(box);
     }
-///////////////////ここまで//////////////////////
+////////////////////	      ここまで      ////////////////////
 
 
 
   function init() {
-        
     // コンテナの準備
     container = document.getElementById( 'canvas-frame' );
-
     container.addEventListener( 'click', function () {
       video.play();
-      update();//回転のため
+      update(); //オブジェクト回転のため付け足し
     } );
-
-	
 
     var select = document.getElementById( 'video_src' );
     select.addEventListener( 'change', function (e) {
@@ -102,6 +94,13 @@ controls.connect();
 
     // カメラを生成
     camera = new THREE.PerspectiveCamera( 75, container.innerWidth / container.innerHeight, 1, 2000 );
+
+
+	// DeviceOrientationControlsインスタンス作成
+   var controls = new THREE.DeviceOrientationControls( camera , true);
+   controls.connect();
+   controls.update();
+
 
     // 2.シーンを生成
     scene = new THREE.Scene();
@@ -184,13 +183,13 @@ controls.connect();
     if(event.clientX) {
       var touchClientX = event.clientX;
       var touchClientY = event.clientY;
-    } else if(event.touches) {
-      var touchClientX = event.touches[0].clientX
-      var touchClientY = event.touches[0].clientY;
-    } else {
-      var touchClientX = event.changedTouches[0].clientX
-      var touchClientY = event.changedTouches[0].clientY
-    }
+   	 } else if(event.touches) {
+      	var touchClientX = event.touches[0].clientX
+        var touchClientY = event.touches[0].clientY;
+    		} else {
+     		 var touchClientX = event.changedTouches[0].clientX
+     		 var touchClientY = event.changedTouches[0].clientY
+    		}
     lon = ( touchClientX - onMouseDownMouseX ) * -0.15 + onMouseDownLon;
     lat = ( touchClientY - onMouseDownMouseY ) * -0.15 + onMouseDownLat;
   }
@@ -212,14 +211,14 @@ controls.connect();
     renderer.render( scene, camera );
     //下の一文をエフェクトに対応するため追加
     effect.render( scene, camera );
-	controls.update();
+	//controls.update();
   }
 
   function update() {
-	meshCube.rotation.x += 0.03;
-	meshCube.rotation.y += 0.03;
-	requestAnimationFrame(update);
-	//renderer.render(scene, camera);
+  meshCube.rotation.x += 0.03;
+  meshCube.rotation.y += 0.03;
+  requestAnimationFrame(update);
+  //renderer.render(scene, camera);
 }
 
 
