@@ -225,7 +225,7 @@ if ('ontouchstart' in window) {
     renderer.setSize( window.innerWidth, window.innerHeight );
     effect.setSize(window.innerWidth, window.innerHeight);
 　　controls.update();
-    renderer.render( scene, camera );
+    //renderer.render( scene, camera );
     //下の一文をエフェクトに対応するため追加
     effect.render( scene, camera );
   }
