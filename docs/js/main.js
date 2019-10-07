@@ -24,7 +24,7 @@ if ('ontouchstart' in window) {
   init();
   animate();
 	// DeviceOrientationControlsインスタンス作成
-var controls = new THREE.DeviceOrientationControls( camera );
+var controls = new THREE.DeviceOrientationControls( camera , true);
 controls.connect();
 
 	 var loader = new THREE.TextureLoader();
@@ -56,6 +56,8 @@ controls.connect();
       video.play();
       update();//回転のため
     } );
+
+	
 
     var select = document.getElementById( 'video_src' );
     select.addEventListener( 'change', function (e) {
