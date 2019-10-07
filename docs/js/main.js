@@ -214,13 +214,10 @@ if ('ontouchstart' in window) {
     renderer.setAnimationLoop( render );
   }
   function render() {
-    lat = Math.max( - 85, Math.min( 85, lat ) );
-    phi = THREE.Math.degToRad( 90 - lat );
-    theta = THREE.Math.degToRad( lon );
-    camera.position.x = 100 * Math.sin( phi ) * Math.cos( theta );
-    camera.position.y = 100 * Math.cos( phi );
-    camera.position.z = 100 * Math.sin( phi ) * Math.sin( theta );
-　  camera.updateProjectionMatrix();
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize( window.innerWidth, window.innerHeight );
+    effect.setSize(window.innerWidth, window.innerHeight);
 　　controls.update();
     renderer.render( scene, camera );
     //下の一文をエフェクトに対応するため追加
