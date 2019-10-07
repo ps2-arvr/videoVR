@@ -220,7 +220,6 @@ if ('ontouchstart' in window) {
     camera.position.x = 100 * Math.sin( phi ) * Math.cos( theta );
     camera.position.y = 100 * Math.cos( phi );
     camera.position.z = 100 * Math.sin( phi ) * Math.sin( theta );
-    camera.lookAt( scene.position );
 　  camera.updateProjectionMatrix();
 　　controls.update();
     renderer.render( scene, camera );
