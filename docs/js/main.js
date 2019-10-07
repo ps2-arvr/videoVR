@@ -13,7 +13,9 @@ if ('ontouchstart' in window) {
 (function () {
 
   // 変数の初期化
-  var camera, scene, renderer, video, texture, container;
+  var camera, renderer, video, texture, container, controls;
+  //シーンを生成
+  scene = new THREE.Scene();
   var fov = 60,
   isUserInteracting = false,
   onMouseDownMouseX = 0, onMouseDownMouseY = 0,
@@ -41,8 +43,6 @@ if ('ontouchstart' in window) {
     }
 ////////////////////	      ここまで      ////////////////////
 
-
-
   function init() {
     // コンテナの準備
     container = document.getElementById( 'canvas-frame' );
@@ -50,6 +50,7 @@ if ('ontouchstart' in window) {
       video.play();
       update(); //オブジェクト回転のため付け足し
     } );
+    
 
     var select = document.getElementById( 'video_src' );
     select.addEventListener( 'change', function (e) {
@@ -95,35 +96,7 @@ if ('ontouchstart' in window) {
     // カメラを生成
     camera = new THREE.PerspectiveCamera( 75, container.innerWidth / container.innerHeight, 1, 2000 );
     camera.position.set(0, 0, 0);
-    //scene.add(camera);
-
-
-window.addEventListener(
-  "deviceorientation",
-  setOrientationControls,
-  true
-);
-	// DeviceOrientationControlsインスタンス作成
-   function setOrientationControls(e) {
-  //スマートフォン以外で処理させない
-  if (!e.alpha) {
-    return;
-  }
-  controls = new THREE.DeviceOrientationControls(
-    camera,
-    true
-  );
-  controls.connect();
-  controls.update();
-  window.removeEventListener(
-    "deviceorientation",
-    setOrientationControls,
-    true
-  );
-}
-   
-    // 2.シーンを生成
-    scene = new THREE.Scene();
+    scene.add(camera);
     
     // 球体を作成し、テクスチャに video を元にして生成したテクスチャを設定します
     // 3. 球体を生成する。半径500、幅60、高さ40に設定し、geometryという名前の変数に格納する。
@@ -143,7 +116,7 @@ window.addEventListener(
 	var materialCube = new THREE.MeshLambertMaterial( { color: 0xf6cece } );
 	this.meshCube = new THREE.Mesh( geometryCube, materialCube );
 	this.meshCube.position.set(-100, 0, 0);
-		scene.add( this.meshCube );
+	scene.add( this.meshCube );
 
     // 4. 3.で作った球体のスケールを（-1,1,1）に設定する
     geometry.scale( -1, 1, 1 );
@@ -159,6 +132,31 @@ window.addEventListener(
     renderer.setPixelRatio( window.devicePixelRatio );
     renderer.setSize( window.innerWidth, window.innerHeight );
     container.appendChild( renderer.domElement );
+　　
+　　//PC用マウス操作
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.target.set(
+	camera.position.x,
+       	camera.position.y,
+	camera.position.z+0.1
+    );
+    controls.noZoom = true;
+    controls.noPan = true;
+
+　　function setOrientationControls(e) {
+	if (!e.alpha) {
+		return;
+	}
+　　　　//スマホだった場合DeviceOrientationControlsインスタンスで上書き
+	controls = new THREE.DeviceOrientationControls(camera, true);
+	controls.connect();
+	controls.update();
+
+	element.addEventListener('click', fullscreen, false);
+	window.removeEventListener('deviceorientation', setOrientationControls, true);
+	}
+	window.addEventListener('deviceorientation', setOrientationControls, true);
+   
     //HMD用にエフェクトを実装
     effect = new THREE.StereoEffect( renderer );
 
@@ -169,6 +167,7 @@ window.addEventListener(
     window.addEventListener( 'resize', onWindowResize, false );
     onWindowResize( null );
  }
+
   function onWindowResize ( event ) {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -222,10 +221,11 @@ window.addEventListener(
     camera.position.y = 100 * Math.cos( phi );
     camera.position.z = 100 * Math.sin( phi ) * Math.sin( theta );
     camera.lookAt( scene.position );
+　  camera.updateProjectionMatrix();
     renderer.render( scene, camera );
     //下の一文をエフェクトに対応するため追加
     effect.render( scene, camera );
-//	controls.update();
+　　controls.update();
   }
 
   function update() {
