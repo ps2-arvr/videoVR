@@ -144,6 +144,16 @@ if ('ontouchstart' in window) {
     // 画面のリサイズに対応
     window.addEventListener( 'resize', onWindowResize, false );
     onWindowResize( null );
+
+	controls = new THREE.OrbitControls(camera, renderer.domElement);
+	controls.target.set(
+		camera.position.x,
+		camera.position.y,
+		camera.position.z+0.1
+	);
+	controls.noZoom = true;
+	controls.noPan = true;
+
 function setOrientationControls(e) {
 		if (!e.alpha) {
 			return;
@@ -217,6 +227,7 @@ function setOrientationControls(e) {
     camera.position.z = 100 * Math.sin( phi ) * Math.sin( theta );
     camera.lookAt( scene.position );
     renderer.render( scene, camera );
+    controls.update();
     //下の一文をエフェクトに対応するため追加
     effect.render( scene, camera );
   }
