@@ -24,13 +24,34 @@ if ('ontouchstart' in window) {
   init();
   animate();
 
-  function init() {
+	 var loader = new THREE.TextureLoader();
+////////////////////ホットスポット配置を試みる//////////////////
+    loader.load("image/wifi.png", function(texture){
+        createBox(texture); // mesh作成
+        render();
+    });
+	 function createBox(texture){
+        box = new THREE.Mesh(
+            new THREE.PlaneGeometry(50, 50, 1,1),
+	    //new THREE.MeshLambertMaterial( { color: 0xf6cece } );
+            new THREE.MeshLambertMaterial({map: texture}));
+        box.position.set(0, 0, 0);
 
+        // シーンに追加
+        scene.add(box);
+    }
+///////////////////ここまで//////////////////////
+
+
+
+  function init() {
+        
     // コンテナの準備
     container = document.getElementById( 'canvas-frame' );
 
     container.addEventListener( 'click', function () {
       video.play();
+      update();//回転のため
     } );
 
     var select = document.getElementById( 'video_src' );
@@ -84,6 +105,22 @@ if ('ontouchstart' in window) {
     // 3. 球体を生成する。半径500、幅60、高さ40に設定し、geometryという名前の変数に格納する。
     var geometry = new THREE.SphereBufferGeometry( 500, 60, 40 );
 
+	//オブジェを配置させる。
+	//オブジェにあてるライトを設定する
+	var light = new THREE.DirectionalLight(0xFFFFFF);
+	light.position.set(2, 6, 2);
+		scene.add( light );
+	var ambientLight = new THREE.AmbientLight(0xFFF888);
+		scene.add( ambientLight );
+
+	//オブジェのパラメータを設定、配置
+	this.meshCube = new THREE.Mesh();
+	var geometryCube = new THREE.BoxGeometry(80, 30, 30);
+	var materialCube = new THREE.MeshLambertMaterial( { color: 0xf6cece } );
+	this.meshCube = new THREE.Mesh( geometryCube, materialCube );
+	this.meshCube.position.set(-100, 0, 0);
+		scene.add( this.meshCube );
+
     // 4. 3.で作った球体のスケールを（-1,1,1）に設定する
     geometry.scale( -1, 1, 1 );
 
@@ -107,7 +144,25 @@ if ('ontouchstart' in window) {
     // 画面のリサイズに対応
     window.addEventListener( 'resize', onWindowResize, false );
     onWindowResize( null );
-  }
+function setOrientationControls(e) {
+		if (!e.alpha) {
+			return;
+		}
+
+		controls = new THREE.DeviceOrientationControls(camera, true);
+		controls.connect();
+		controls.update();
+
+		element.addEventListener('click', fullscreen, false);
+
+		window.removeEventListener('deviceorientation', setOrientationControls, true);
+	}
+	window.addEventListener('deviceorientation', setOrientationControls, true);
+ }
+ 
+
+
+  
   function onWindowResize ( event ) {
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
@@ -165,5 +220,13 @@ if ('ontouchstart' in window) {
     //下の一文をエフェクトに対応するため追加
     effect.render( scene, camera );
   }
+
+  function update() {
+	meshCube.rotation.x += 0.03;
+	meshCube.rotation.y += 0.03;
+	requestAnimationFrame(update);
+	//renderer.render(scene, camera);
+}
+
 
 })();
