@@ -99,6 +99,14 @@ if ('ontouchstart' in window) {
 
     // 2.シーンを生成
     scene = new THREE.Scene();
+
+    lat = Math.max( - 85, Math.min( 85, lat ) );
+    phi = THREE.Math.degToRad( 90 - lat );
+    theta = THREE.Math.degToRad( lon );
+    camera.position.x = 100 * Math.sin( phi ) * Math.cos( theta );
+    camera.position.y = 100 * Math.cos( phi );
+    camera.position.z = 100 * Math.sin( phi ) * Math.sin( theta );
+    scene.add(camera);
     
     // 球体を作成し、テクスチャに video を元にして生成したテクスチャを設定します
     // 3. 球体を生成する。半径500、幅60、高さ40に設定し、geometryという名前の変数に格納する。
