@@ -23,6 +23,8 @@ if ('ontouchstart' in window) {
 
   init();
   animate();
+   var controls = new THREE.DeviceOrientationControls(camera, true);
+   controls.connect();
 
    var loader = new THREE.TextureLoader();
 ////////////////////ホットスポット配置を試みる//////////////////
@@ -79,12 +81,10 @@ if ('ontouchstart' in window) {
     // video からテクスチャを生成
     //1.textureをnewしてvideoを渡す 
     texture = new THREE.Texture( video );
-
     texture.generateMipmaps = false;
     texture.minFilter = THREE.NearestFilter;
     texture.maxFilter = THREE.NearestFilter;
     texture.format = THREE.RGBFormat;
-
     // 動画に合わせてテクスチャを更新
     setInterval( function () {
       if ( video.readyState >= video.HAVE_CURRENT_DATA ) {
@@ -97,31 +97,6 @@ if ('ontouchstart' in window) {
     camera.position.set(0, 0, 0);
     //scene.add(camera);
 
-
-window.addEventListener(
-  "deviceorientation",
-  setOrientationControls,
-  true
-);
-	// DeviceOrientationControlsインスタンス作成
-   function setOrientationControls(e) {
-  //スマートフォン以外で処理させない
-  if (!e.alpha) {
-    return;
-  }
-  controls = new THREE.DeviceOrientationControls(
-    camera,
-    true
-  );
-  controls.connect();
-  controls.update();
-  window.removeEventListener(
-    "deviceorientation",
-    setOrientationControls,
-    true
-  );
-}
-   
     // 2.シーンを生成
     scene = new THREE.Scene();
     
@@ -163,7 +138,7 @@ window.addEventListener(
     effect = new THREE.StereoEffect( renderer );
 
     // ドラッグ・スワイプ操作を設定
-    container.addEventListener( EVENT.TOUCH_START, onDocumentMouseDown, false );
+   container.addEventListener( EVENT.TOUCH_START, onDocumentMouseDown, false );
 
     // 画面のリサイズに対応
     window.addEventListener( 'resize', onWindowResize, false );
@@ -225,7 +200,7 @@ window.addEventListener(
     renderer.render( scene, camera );
     //下の一文をエフェクトに対応するため追加
     effect.render( scene, camera );
-//	controls.update();
+    controls.update();
   }
 
   function update() {
@@ -233,6 +208,7 @@ window.addEventListener(
   meshCube.rotation.y += 0.03;
   requestAnimationFrame(update);
   //renderer.render(scene, camera);
+  
 }
 
 
