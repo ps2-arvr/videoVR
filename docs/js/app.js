@@ -44,6 +44,27 @@ class App {
                 video.setAttribute( 'playsinline', 'playsinline' );
                 video.setAttribute( 'muted', 'muted' );
                 video.play();
+		
+		var texture = new THREE.Texture( video );
+                texture.generateMipmaps = false;
+                texture.minFilter = THREE.NearestFilter;
+                texture.maxFilter = THREE.NearestFilter;
+                texture.format = THREE.RGBFormat;
+
+                // 動画に合わせてテクスチャを更新
+                setInterval( function () {
+                  if ( video.readyState >= video.HAVE_CURRENT_DATA ) {
+                    texture.needsUpdate = true;
+                  }
+                 } ,1000 / 24 );
+
+		var geometrySphere = new THREE.SphereGeometry(500, 60, 40);
+                geometrySphere.scale(-1, 1, 1);
+		var meshSphere = new THREE.Mesh( geometrySphere, new THREE.MeshBasicMaterial( { map: texture } ) );
+		meshSphere.position.set(-100, 0, 0);
+
+		this.scene.add( meshSphere );
+	
 
    		 }
                 video.setAttribute( 'webkit-playsinline', 'webkit-playsinline' );
