@@ -23,14 +23,23 @@ class App {
                   video.src = select.value;
                   video.play();
                 } );
-                
+
                 // video 要素を生成
                 var video = document.createElement( 'video' );
                 video.crossOrigin = 'anonymous';
                 video.loop = true;
                 video.muted = true;
-                //URLから取得したパラメータ(param)の内容によって、表示する動画を変更
-	        video.src = './video/CrystalShower.mp4';
+
+		//URLから動画パラメータを取得し、paramに保存する
+		var param = location.search
+		param = param.replace("?", "");
+
+		//URLから取得したパラメータ(param)の内容によって、表示する動画を変更
+		//読み込んだパスがerrorの場合、BavarianAlpsのパスに固定。trueの場合はパスの動画をそのまま表示
+		video.src = './video/'+param+'.mp4';
+		video.onerror = function() {
+        	video.src = './video/BavarianAlps.mp4';
+   		 }
                 video.setAttribute( 'webkit-playsinline', 'webkit-playsinline' );
                 video.setAttribute( 'playsinline', 'playsinline' );
                 video.setAttribute( 'muted', 'muted' );

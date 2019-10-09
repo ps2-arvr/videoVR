@@ -19,7 +19,7 @@ function init() {
 
 	effect = new THREE.StereoEffect(renderer);
 
-	camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 10000 );
+	camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10000 );
 	lat = Math.max( - 85, Math.min( 85, lat ) );	
 	phi = THREE.Math.degToRad( 90 - lat );
 	theta = THREE.Math.degToRad( lon );
