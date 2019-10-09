@@ -17,7 +17,7 @@ class App {
 		this.meshCube = new THREE.Mesh( geometryCube, materialCube );
 		this.meshCube.position.set(0, 0, 50);
 		this.scene.add( this.meshCube );
-                
+	
                 var select = document.getElementById( 'video_src' );
                 select.addEventListener( 'change', function (e) {
                   video.src = select.value;
@@ -37,8 +37,14 @@ class App {
 		//URLから取得したパラメータ(param)の内容によって、表示する動画を変更
 		//読み込んだパスがerrorの場合、BavarianAlpsのパスに固定。trueの場合はパスの動画をそのまま表示
 		video.src = './video/'+param+'.mp4';
+
 		video.onerror = function() {
         	video.src = './video/BavarianAlps.mp4';
+		video.setAttribute( 'webkit-playsinline', 'webkit-playsinline' );
+                video.setAttribute( 'playsinline', 'playsinline' );
+                video.setAttribute( 'muted', 'muted' );
+                video.play();
+
    		 }
                 video.setAttribute( 'webkit-playsinline', 'webkit-playsinline' );
                 video.setAttribute( 'playsinline', 'playsinline' );
