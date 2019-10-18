@@ -1,4 +1,4 @@
-var videoName = ['BavarianAlps','CrystalShower','DoiSuthep'];
+var videoName = ['BavarianAlps','CrystalShower','DoiSuthep','Ayutthaya'];
 
 class App {
 	constructor(scene) {
@@ -105,10 +105,10 @@ class App {
 		//meshSphere.visible = false;
 	}
 
-	updateVideoTexture() {
-		this.meshSphere.visible = false;
-		//scene.remove( this.meshSphere );
-		//this.meshSphere.dispose();
+	updateVideoTexture(index) {
+		//this.meshSphere.visible = false;
+		this.scene.remove( this.meshSphere );
+		this.geometrySphere.dispose();
 
 		 var select = document.getElementById( 'video_src' );
                 select.addEventListener( 'change', function (e) {
@@ -119,7 +119,7 @@ class App {
                 video.crossOrigin = 'anonymous';
                 video.loop = true;
                 video.muted = true;
-        	video.src = './video/DoiSuthep.mp4';
+        	video.src = './video/'+videoName[index]+'.mp4';
 		video.setAttribute( 'webkit-playsinline', 'webkit-playsinline' );
                 video.setAttribute( 'playsinline', 'playsinline' );
                 video.setAttribute( 'muted', 'muted' );

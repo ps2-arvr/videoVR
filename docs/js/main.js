@@ -12,7 +12,7 @@ var video;
 var raycaster,scopedObj;
 var cursor= new THREE.Vector2(0,0);
 
-//var j ;
+var j =0;
 
 init();
 animate();
@@ -119,7 +119,11 @@ function render(dt) {
 				//j++;
 				//location.reload(false);
 				//j == test;
-				app.updateVideoTexture();
+				j++;
+				if(j==4){
+				j=0;
+				}
+				app.updateVideoTexture(j);
 				arcLen = 0;
 				
 				}
