@@ -18,11 +18,48 @@
         bottom: 0;
 	}
 
+#cursors{
+  position: absolute;
+  display: table;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 10;
+}
+#cursors .cursor{
+  position: absolute;
+  width: 0;
+  height: 0;
+  top: 50%;
+}
+#cursors .cursor-l{
+  left: 25%;
+  margin-left: -10px;
+}
+#cursors .cursor-r{
+  right: 25%;
+  margin-right: -10px;
+}
+#cursors .cursor .dot{
+  position: relative;
+  width: 10px;
+  height: 10px;
+  margin-top: -5px;
+  margin-left: -5px;
+  border-radius: 50%;
+  background: #f00;
+  opacity: 0.5;
+}
+
     </style>
   </head>
   <body>
     <div id="example"></div>
     <div id="video_src"></div>
+	<div id="cursors">
+	<div class="cursor cursor-l"><p class="dot"></p></div>
+	<div class="cursor cursor-r"><p class="dot"></p></div>
   <script src="js/lib/three.min.js"></script>
   <script src="js/lib/StereoEffect.js"></script>
   <script src="js/lib/DeviceOrientationControls.js"></script>

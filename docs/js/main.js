@@ -106,7 +106,7 @@ function render(dt) {
 			geometryTorus.dispose();
 			}
   			arcLen +=0.02;
-  			geometryTorus = new THREE.TorusGeometry(28, 1.8,3, 60,arcLen);
+  			geometryTorus = new THREE.TorusGeometry(45, 1.8,3, 60,arcLen);
 			this.torusCube = new THREE.Mesh( geometryTorus, materialTorus );
 			this.torusCube.position.set(-30, 60, -230);
 			this.torusCube.transparent=true
@@ -116,7 +116,7 @@ function render(dt) {
 				//円弧が頂点に到達した時を判定し、動画名をパラメータに渡しページを更新する
 				if(arcLen>6.5){
 				j++;
-					if(j==4){
+					if( j == 4 ){
 					j=0;
 					}
 				app.updateVideoTexture(j);
@@ -129,7 +129,7 @@ function render(dt) {
 			geometryTorus.dispose();
 			}
   			arcLen +=0.02;
-  			geometryTorus = new THREE.TorusGeometry(28, 1.8,3, 60,arcLen);
+  			geometryTorus = new THREE.TorusGeometry(45, 1.8,3, 60,arcLen);
 			this.torusCube = new THREE.Mesh( geometryTorus, materialTorus );
 			this.torusCube.position.set(-30, 60, 230);
 			this.torusCube.transparent=true
@@ -138,9 +138,9 @@ function render(dt) {
 			//this.torusCube.rotation.z = 2.1;
 				//円弧が頂点に到達した時を判定し、動画名をパラメータに渡しページを更新する
 				if(arcLen>6.5){
-				j++;
-					if(j==4){
-					j=0;
+				j--;
+					if( j == -1){
+					j=3;
 					}
 				app.updateVideoTexture(j);
 				arcLen = 0;

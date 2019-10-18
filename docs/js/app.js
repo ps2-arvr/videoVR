@@ -19,7 +19,7 @@ class App {
 
 		//ホットスポットを生成
 		var material = new THREE.MeshBasicMaterial( { color: 0xBAD3FF } );
-      		this.mesh =new THREE.Mesh( new THREE.CircleGeometry( 20, 3, Math.PI / 1.5 ), material );
+      		this.mesh =new THREE.Mesh( new THREE.CircleGeometry( 30, 3, Math.PI / 1.5 ), material );
 		this.mesh.position.set(-30, 60, -230);
      		scene.add( this.mesh );
 		this.mesh.name='loadTorus';
@@ -27,7 +27,7 @@ class App {
 
 		//ホットスポットを生成
 		var material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
-      		this.secondMesh =new THREE.Mesh( new THREE.CircleGeometry( 20, 3, Math.PI / 1.5 ), material );
+      		this.secondMesh =new THREE.Mesh( new THREE.CircleGeometry( 30, 3, Math.PI / 1.5 ), material );
 		this.secondMesh.position.set(-30, 60, 230);
      		scene.add( this.secondMesh );
 		this.secondMesh.name='secondLoad';
