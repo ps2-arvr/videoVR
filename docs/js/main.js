@@ -6,10 +6,13 @@ var clock = new THREE.Clock();
 var scene = new THREE.Scene();
 var app = new App(scene);
 var lon = 0, lat = 0, phi=0, theta = 0;
+var video;
 
 //THREE.Raycaster用
 var raycaster,scopedObj;
 var cursor= new THREE.Vector2(0,0);
+
+//var j ;
 
 init();
 animate();
@@ -33,7 +36,7 @@ function init() {
 	camera.position.z = 100 * Math.sin( phi ) * Math.sin( theta );
 	
 	scene.add(camera);
-
+	camera.lookAt(new THREE.Vector3(0, 0, 0));
 	controls = new THREE.OrbitControls(camera, element);
 	controls.target.set(
 		camera.position.x,
@@ -85,7 +88,8 @@ function update(dt) {
 	controls.update(dt);
 	app.update(dt);
 }
-	var len = 0;
+	
+	var arcLen = 0;
 	var materialTorus = new THREE.MeshLambertMaterial( { color: 0xEFFBFB } );
 	var geometryTorus;
 function render(dt) {
@@ -94,33 +98,39 @@ function render(dt) {
 	var intersects = raycaster.intersectObjects(scene.children, true);
 	if ( intersects.length > 1 ) {
 		for(var i=0; i < intersects.length; i++){
+			//オブジェクトが中央に来たとき、円弧のパラメータを変化させる
 			if ( intersects[i].object.name == 'loadTorus') {
-			//オブジェクトが中央に来たとき、キューブのパラメータを変化させる
+			//円弧の注視を中断していた場合、過去のtorusCubeをdisposeする
 			if(geometryTorus != null){
-				scene.remove( this.torusCube );
-				geometryTorus.dispose();
+			scene.remove( this.torusCube );
+			geometryTorus.dispose();
 			}
-  			len +=0.02;
-  			geometryTorus = new THREE.TorusGeometry(28, 1.8,3, 60,len);
+  			arcLen +=0.02;
+  			geometryTorus = new THREE.TorusGeometry(28, 1.8,3, 60,arcLen);
 			this.torusCube = new THREE.Mesh( geometryTorus, materialTorus );
-			this.torusCube.position.set(-40, 60, -30);
+			this.torusCube.position.set(-30, 60, -230);
 			this.torusCube.transparent=true
 			this.scene.add( this.torusCube );
 			this.torusCube.rotation.setFromRotationMatrix(this.camera.matrix);
-			this.torusCube.rotation.z = 2.1;
-
-			if(len>6.5){
-			history.replaceState('','','?CrystalShower');
-			location.reload();
-			}
+			//this.torusCube.rotation.z = 2.1;
+				//円弧が頂点に到達した時を判定し、動画名をパラメータに渡しページを更新する
+				if(arcLen>6.5){
+				//history.replaceState('', '', '?CrystalShower');
+				//j++;
+				//location.reload(false);
+				//j == test;
+				app.updateVideoTexture();
+				arcLen = 0;
+				
+				}
 			}
 		}
-	
+	//円弧の注視を中断した際に、disposeを行う
 	}else if (intersects.length == 1){
 		if(geometryTorus != null){
 			scene.remove( this.torusCube );
 			geometryTorus.dispose();
-			len = 0;
+			arcLen = 0;
 		}	
 	}
 	app.render(dt);
