@@ -115,17 +115,35 @@ function render(dt) {
 			//this.torusCube.rotation.z = 2.1;
 				//円弧が頂点に到達した時を判定し、動画名をパラメータに渡しページを更新する
 				if(arcLen>6.5){
-				//history.replaceState('', '', '?CrystalShower');
-				//j++;
-				//location.reload(false);
-				//j == test;
 				j++;
-				if(j==4){
-				j=0;
-				}
+					if(j==4){
+					j=0;
+					}
 				app.updateVideoTexture(j);
 				arcLen = 0;
-				
+				}
+			//二つ目のホットスポットの注視イベント
+			}else if(intersects[i].object.name == 'secondLoad'){
+			if(geometryTorus != null){
+			scene.remove( this.torusCube );
+			geometryTorus.dispose();
+			}
+  			arcLen +=0.02;
+  			geometryTorus = new THREE.TorusGeometry(28, 1.8,3, 60,arcLen);
+			this.torusCube = new THREE.Mesh( geometryTorus, materialTorus );
+			this.torusCube.position.set(-30, 60, 230);
+			this.torusCube.transparent=true
+			this.scene.add( this.torusCube );
+			this.torusCube.rotation.setFromRotationMatrix(this.camera.matrix);
+			//this.torusCube.rotation.z = 2.1;
+				//円弧が頂点に到達した時を判定し、動画名をパラメータに渡しページを更新する
+				if(arcLen>6.5){
+				j++;
+					if(j==4){
+					j=0;
+					}
+				app.updateVideoTexture(j);
+				arcLen = 0;
 				}
 			}
 		}
@@ -158,4 +176,5 @@ function fullscreen() {
 	} else if (container.webkitRequestFullscreen) {
 		container.webkitRequestFullscreen();
 	}
+
 }

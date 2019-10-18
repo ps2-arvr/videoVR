@@ -100,7 +100,7 @@ class App {
                 this.geometrySphere.scale(-1, 1, 1);
 		this.meshSphere = new THREE.Mesh( this.geometrySphere, new THREE.MeshBasicMaterial( { map: texture } ) );
 		this.meshSphere.position.set(-100, 0, 0);
-
+		this.meshSphere.name='videoMesh';
 		this.scene.add( this.meshSphere );
 		//meshSphere.visible = false;
 	}
@@ -108,8 +108,9 @@ class App {
 	updateVideoTexture(index) {
 		//this.meshSphere.visible = false;
 		this.scene.remove( this.meshSphere );
-		this.geometrySphere.dispose();
+		this.geometrySphere.dispose(); 
 
+		
 		 var select = document.getElementById( 'video_src' );
                 select.addEventListener( 'change', function (e) {
                   video.src = select.value;
@@ -142,8 +143,10 @@ class App {
                 geometrySphere.scale(-1, 1, 1);
 		var meshSphere = new THREE.Mesh( geometrySphere, new THREE.MeshBasicMaterial( { map: texture } ) );
 		meshSphere.position.set(-100, 0, 0);
+		this.meshSphere.name='videoMesh';
 		this.scene.add( meshSphere );
    		 
+
 	}
 
 	update(dt) {
