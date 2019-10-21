@@ -154,6 +154,8 @@ function render(dt) {
 		if(geometryTorus != null){
 			scene.remove( this.torusCube );
 			geometryTorus.dispose();
+
+			scene.remove(this.secondCube);
 			if (0 < arcLen ){
 				arcLen -=0.009;
 				geometryTorus = new THREE.TorusGeometry(45, 1.8,3, 60,arcLen);
@@ -162,6 +164,12 @@ function render(dt) {
 				this.torusCube.transparent=true
 				this.scene.add( this.torusCube );
 				this.torusCube.rotation.setFromRotationMatrix(this.camera.matrix);
+
+				this.secondCube = new THREE.Mesh( geometryTorus, materialTorus );
+				this.secondCube.position.set(-30, 60, 230);
+				this.secondCube.transparent=true
+				this.scene.add( this.secondCube );
+				this.secondCube.rotation.setFromRotationMatrix(this.camera.matrix);
 			}
 		}
 	}
