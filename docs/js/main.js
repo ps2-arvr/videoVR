@@ -154,8 +154,16 @@ function render(dt) {
 		if(geometryTorus != null){
 			scene.remove( this.torusCube );
 			geometryTorus.dispose();
-			arcLen = 0;
-		}	
+			if (0 < arcLen ){
+				arcLen -=0.009;
+				geometryTorus = new THREE.TorusGeometry(45, 1.8,3, 60,arcLen);
+				this.torusCube = new THREE.Mesh( geometryTorus, materialTorus );
+				this.torusCube.position.set(-30, 60, -230);
+				this.torusCube.transparent=true
+				this.scene.add( this.torusCube );
+				this.torusCube.rotation.setFromRotationMatrix(this.camera.matrix);
+			}
+		}
 	}
 	app.render(dt);
 	effect.render(scene, camera);
