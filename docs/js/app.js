@@ -4,8 +4,7 @@ class App {
 	constructor(scene) {
 		this.scene = scene;
 	}
-	init(camera) {
-		this.camera = camera;
+	init() {
 		var light = new THREE.DirectionalLight(0xFFFFFF);
 		light.position.set(0, 0, 0);
 		scene.add( light );
@@ -44,40 +43,7 @@ class App {
                 video.crossOrigin = 'anonymous';
                 video.loop = true;
                 video.muted = true;
-
-		//URLから取得したパラメータ(param)の内容によって、表示する動画を変更
-		//読み込んだパスがerrorの場合、BavarianAlpsのパスに固定。trueの場合はパスの動画をそのまま表示
-
-		video.src = './video/'+param+'.mp4';
-		//異常系（動画を読み込んだ際のerrorを判定）の処理を開始
-		video.onerror = function() {
         	video.src = './video/BavarianAlps.mp4';
-		video.setAttribute( 'webkit-playsinline', 'webkit-playsinline' );
-                video.setAttribute( 'playsinline', 'playsinline' );
-                video.setAttribute( 'muted', 'muted' );
-                video.play();
-		
-		var texture = new THREE.Texture( video );
-                texture.generateMipmaps = false;
-                texture.minFilter = THREE.NearestFilter;
-                texture.maxFilter = THREE.NearestFilter;
-                texture.format = THREE.RGBFormat;
-
-                // 動画に合わせてテクスチャを更新
-                setInterval( function () {
-                  if ( video.readyState >= video.HAVE_CURRENT_DATA ) {
-                    texture.needsUpdate = true;
-                  }
-                 } ,1000 / 24 );
-
-		var geometrySphere = new THREE.SphereGeometry(500, 60, 40);
-                geometrySphere.scale(-1, 1, 1);
-		var meshSphere = new THREE.Mesh( geometrySphere, new THREE.MeshBasicMaterial( { map: texture } ) );
-		meshSphere.position.set(-100, 0, 0);
-		this.scene.add( meshSphere );
-   		 }
-		
-		//ここから正常系の処理を再開、処理内容としては同じ
                 video.setAttribute( 'webkit-playsinline', 'webkit-playsinline' );
                 video.setAttribute( 'playsinline', 'playsinline' );
                 video.setAttribute( 'muted', 'muted' );
@@ -98,17 +64,31 @@ class App {
 
 		this.geometrySphere = new THREE.SphereGeometry(500, 60, 40);
                 this.geometrySphere.scale(-1, 1, 1);
-		this.meshSphere = new THREE.Mesh( this.geometrySphere, new THREE.MeshBasicMaterial( { map: texture } ) );
+		this.material = new THREE.MeshBasicMaterial( { map: texture } ) ;
+		this.meshSphere = new THREE.Mesh( this.geometrySphere, this.material);
 		this.meshSphere.position.set(-100, 0, 0);
-		this.meshSphere.name='videoMesh';
 		this.scene.add( this.meshSphere );
 		//meshSphere.visible = false;
+		texture.dispose();
 	}
 
 	updateVideoTexture(index) {
 		//this.meshSphere.visible = false;
-		this.scene.remove( this.meshSphere );
+		if(this.geometrySphere != null ){
+		this.scene.remove(this.meshSphere);
 		this.geometrySphere.dispose(); 
+		this.material.dispose();
+
+		}
+		if(this.secondSphere != null ){
+		this.scene.remove( this.videoSphere );
+		this.secondSphere.dispose(); 
+		this.videoMaterial.dispose();
+
+		}
+
+		//this.scene.remove( meshSphere );
+		//geometrySphere.dispose(); 
 
 		
 		 var select = document.getElementById( 'video_src' );
@@ -138,14 +118,14 @@ class App {
                     texture.needsUpdate = true;
                   }
                  } ,1000 / 24 );
-
-		var geometrySphere = new THREE.SphereGeometry(500, 60, 40);
-                geometrySphere.scale(-1, 1, 1);
-		var meshSphere = new THREE.Mesh( geometrySphere, new THREE.MeshBasicMaterial( { map: texture } ) );
-		meshSphere.position.set(-100, 0, 0);
-		this.meshSphere.name='videoMesh';
-		this.scene.add( meshSphere );
-   		 
+		var secondSphere;
+		this.secondSphere = new THREE.SphereGeometry(500, 60, 40);
+                this.secondSphere.scale(-1, 1, 1);
+		this.videoMaterial = new THREE.MeshBasicMaterial( { map: texture } );
+		this.videoSphere = new THREE.Mesh( this.secondSphere , this.videoMaterial);
+		this.videoSphere.position.set(-100, 0, 0);
+		this.scene.add( this.videoSphere );
+ 
 
 	}
 
@@ -155,8 +135,8 @@ class App {
 	}
 	render(dt) {
 		//図形がいつも正面を向くようにする
-		this.mesh.rotation.setFromRotationMatrix(this.camera.matrix);
-		this.secondMesh.rotation.setFromRotationMatrix(this.camera.matrix);
+		this.mesh.rotation.setFromRotationMatrix(camera.matrix);
+		this.secondMesh.rotation.setFromRotationMatrix(camera.matrix);
 	}
 	
 

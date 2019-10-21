@@ -37,15 +37,17 @@ function init() {
 	
 	scene.add(camera);
 	camera.lookAt(new THREE.Vector3(0, 0, 0));
+	//マウス操作
 	controls = new THREE.OrbitControls(camera, element);
+	//controls.rotateUp(Math.PI / 9);
 	controls.target.set(
-		camera.position.x,
+		camera.position.x-20,
 		camera.position.y,
 		camera.position.z+0.1
 	);
 	controls.noZoom = true;
 	controls.noPan = true;
-
+	//ジャイロ操作に切り替え
 	function setOrientationControls(e) {
 		if (!e.alpha) {
 			return;
