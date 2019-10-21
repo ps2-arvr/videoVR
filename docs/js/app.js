@@ -44,7 +44,7 @@ class App {
                 var video = document.createElement( 'video' );
                 video.crossOrigin = 'anonymous';
                 video.loop = true;
-                video.muted = true;
+                video.muted = false;
         	video.src = './video/BavarianAlps.mp4';
                 video.setAttribute( 'webkit-playsinline', 'webkit-playsinline' );
                 video.setAttribute( 'playsinline', 'playsinline' );
@@ -101,7 +101,7 @@ class App {
 		var video = document.createElement( 'video' );
                 video.crossOrigin = 'anonymous';
                 video.loop = true;
-                video.muted = true;
+                video.muted = false;
         	video.src = './video/'+videoName[index]+'.mp4';
 		video.setAttribute( 'webkit-playsinline', 'webkit-playsinline' );
                 video.setAttribute( 'playsinline', 'playsinline' );
