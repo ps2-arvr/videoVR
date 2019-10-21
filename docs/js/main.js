@@ -1,13 +1,11 @@
 var camera, renderer;
 var effect, controls;
 var element, container;
-
 var clock = new THREE.Clock();
 var scene = new THREE.Scene();
 var app = new App(scene);
 var lon = 0, lat = 0, phi=0, theta = 0;
 var video;
-
 //THREE.Raycaster用
 var raycaster,scopedObj;
 var cursor= new THREE.Vector2(0,0);
@@ -35,10 +33,10 @@ function init() {
 	camera.position.y = 100 * Math.cos( phi );
 	camera.position.z = 100 * Math.sin( phi ) * Math.sin( theta );
 	
-	scene.add(camera);
+	scene.add( camera );
 	camera.lookAt(new THREE.Vector3(0, 0, 0));
 	//マウス操作
-	controls = new THREE.OrbitControls(camera, element);
+	controls = new THREE.OrbitControls( camera, element );
 	//controls.rotateUp(Math.PI / 9);
 	controls.target.set(
 		camera.position.x-20,
@@ -48,8 +46,8 @@ function init() {
 	controls.noZoom = true;
 	controls.noPan = true;
 	//ジャイロ操作に切り替え
-	function setOrientationControls(e) {
-		if (!e.alpha) {
+	function setOrientationControls( e ) {
+		if ( !e.alpha ) {
 			return;
 		}
 
@@ -77,9 +75,9 @@ function resize() {
 	camera.aspect = width / height;
 	camera.updateProjectionMatrix();
 
-	renderer.setSize(width, height);
+	renderer.setSize( width, height );
 
-	effect.setSize(width, height);
+	effect.setSize( width, height );
 }
 
 function update(dt) {
@@ -93,11 +91,12 @@ function update(dt) {
 	
 	var arcLen = 0;
 	var materialTorus = new THREE.MeshLambertMaterial( { color: 0xEFFBFB } );
+	var secondMaterial = new THREE.MeshLambertMaterial( { color: 0xF7E897 } );
 	var geometryTorus;
 function render(dt) {
 	//ホットスポットに注視点を合わせた時の処理
 	raycaster.setFromCamera( cursor, camera );
-	var intersects = raycaster.intersectObjects(scene.children, true);
+	var intersects = raycaster.intersectObjects( scene.children, true );
 	if ( intersects.length > 1 ) {
 		for(var i=0; i < intersects.length; i++){
 			//オブジェクトが中央に来たとき、円弧のパラメータを変化させる
@@ -105,80 +104,88 @@ function render(dt) {
 			//円弧の注視を中断していた場合、過去のtorusCubeをdisposeする
 			if(geometryTorus != null){
 			scene.remove( this.torusCube );
+			scene.remove( this.secondCube );
 			geometryTorus.dispose();
+			
 			}
-  			arcLen +=0.02;
-  			geometryTorus = new THREE.TorusGeometry(45, 1.8,3, 60,arcLen);
+  			arcLen -=0.02;
+  			geometryTorus = new THREE.TorusGeometry( 45, 1.8, 3, 60, arcLen );
 			this.torusCube = new THREE.Mesh( geometryTorus, materialTorus );
-			this.torusCube.position.set(-30, 60, -230);
+			this.torusCube.position.set( -30, 60, -230 );
 			this.torusCube.transparent=true
 			this.scene.add( this.torusCube );
 			this.torusCube.rotation.setFromRotationMatrix(this.camera.matrix);
-			//this.torusCube.rotation.z = 2.1;
+			this.torusCube.rotation.z =1.65;
+			
 				//円弧が頂点に到達した時を判定し、動画名をパラメータに渡しページを更新する
-				if(arcLen>6.5){
+				if(arcLen<-6.5){
 				j++;
 					if( j == 4 ){
 					j=0;
 					}
-				app.updateVideoTexture(j);
+				app.updateVideoTexture( j );
 				arcLen = 0;
 				}
 			//二つ目のホットスポットの注視イベント
 			}else if(intersects[i].object.name == 'secondLoad'){
 			if(geometryTorus != null){
 			scene.remove( this.torusCube );
+			scene.remove( this.secondCube );
 			geometryTorus.dispose();
+			
 			}
-  			arcLen +=0.02;
-  			geometryTorus = new THREE.TorusGeometry(45, 1.8,3, 60,arcLen);
-			this.torusCube = new THREE.Mesh( geometryTorus, materialTorus );
-			this.torusCube.position.set(-30, 60, 230);
-			this.torusCube.transparent=true
-			this.scene.add( this.torusCube );
-			this.torusCube.rotation.setFromRotationMatrix(this.camera.matrix);
-			//this.torusCube.rotation.z = 2.1;
+  			arcLen -=0.02;
+  			geometryTorus = new THREE.TorusGeometry( 45, 1.8, 3, 60, arcLen );
+			this.secondCube = new THREE.Mesh( geometryTorus, secondMaterial );
+			this.secondCube.position.set( -30, 60, 230 );
+			this.secondCube.transparent=true
+			this.scene.add( this.secondCube );
+			this.secondCube.rotation.setFromRotationMatrix(this.camera.matrix);
+			this.secondCube.rotation.z =-1.65;
 				//円弧が頂点に到達した時を判定し、動画名をパラメータに渡しページを更新する
-				if(arcLen>6.5){
+				if(arcLen<-6.5){
 				j--;
 					if( j == -1){
 					j=3;
 					}
-				app.updateVideoTexture(j);
+				app.updateVideoTexture( j );
 				arcLen = 0;
 				}
 			}
 		}
 	//円弧の注視を中断した際に、disposeを行う
-	}else if (intersects.length == 1){
-		if(geometryTorus != null){
+	}else if ( intersects.length == 1){
+		if( geometryTorus != null ){
 			scene.remove( this.torusCube );
+			scene.remove( this.secondCube );
 			geometryTorus.dispose();
+			if ( 0 > arcLen ){
+				arcLen +=0.009;
+				geometryTorus = new THREE.TorusGeometry( 45, 1.8, 3, 60, arcLen );
 
-			scene.remove(this.secondCube);
-			if (0 < arcLen ){
-				arcLen -=0.009;
-				geometryTorus = new THREE.TorusGeometry(45, 1.8,3, 60,arcLen);
 				this.torusCube = new THREE.Mesh( geometryTorus, materialTorus );
-				this.torusCube.position.set(-30, 60, -230);
+				this.torusCube.position.set( -30, 60, -230 );
 				this.torusCube.transparent=true
 				this.scene.add( this.torusCube );
-				this.torusCube.rotation.setFromRotationMatrix(this.camera.matrix);
+				this.torusCube.rotation.setFromRotationMatrix( this.camera.matrix );
+				this.torusCube.rotation.z =1.65;
+				
 
-				this.secondCube = new THREE.Mesh( geometryTorus, materialTorus );
-				this.secondCube.position.set(-30, 60, 230);
+				this.secondCube = new THREE.Mesh( geometryTorus, secondMaterial );
+				this.secondCube.position.set( -30, 60, 230 );
 				this.secondCube.transparent=true
 				this.scene.add( this.secondCube );
-				this.secondCube.rotation.setFromRotationMatrix(this.camera.matrix);
+				this.secondCube.rotation.setFromRotationMatrix( this.camera.matrix );
+				this.secondCube.rotation.z =-1.7;
 			}
 		}
 	}
 	app.render(dt);
-	effect.render(scene, camera);
+	effect.render( scene, camera );
 }
 
 function animate(t) {
-	requestAnimationFrame(animate);
+	requestAnimationFrame( animate );
 
 	update(clock.getDelta());
 	render(clock.getDelta());

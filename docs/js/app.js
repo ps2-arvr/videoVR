@@ -25,12 +25,14 @@ class App {
 		this.mesh.rotation.y = Math.PI/3;
 
 		//ホットスポットを生成
-		var material = new THREE.MeshBasicMaterial( { color: 0xFFFFFF } );
+		var material = new THREE.MeshBasicMaterial( { color: 0xF7B897 } );
       		this.secondMesh =new THREE.Mesh( new THREE.CircleGeometry( 30, 3, Math.PI / 1.5 ), material );
 		this.secondMesh.position.set(-30, 60, 230);
      		scene.add( this.secondMesh );
 		this.secondMesh.name='secondLoad';
-		this.secondMesh.rotation.y = Math.PI/2.5;
+		//this.secondMesh.rotation.x = 0;
+		//this.secondMesh.rotation.y = 3.2;
+		//this.secondMesh.rotation.z = 0.9;
 
 
                 var select = document.getElementById( 'video_src' );
@@ -137,6 +139,9 @@ class App {
 		//図形がいつも正面を向くようにする
 		this.mesh.rotation.setFromRotationMatrix(camera.matrix);
 		this.secondMesh.rotation.setFromRotationMatrix(camera.matrix);
+		//this.secondMesh.rotation.x = 0.3;
+		
+		this.secondMesh.rotation.z = 2.06;
 	}
 	
 
