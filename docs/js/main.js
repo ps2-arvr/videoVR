@@ -42,9 +42,8 @@ function init() {
 	scene.add( camera );
 	//test
 	camera_doc=new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10000);
-	camera_doc.position.set(0,0,0.01);
-	camera_doc.lookAt(new THREE.Vector3(0,0,0));
-	
+	camera_doc.position.set(this.defx,this.defy,this.defz);
+
 	//camera.lookAt(new THREE.Vector3(10, 0, 0));
 	//É}ÉEÉXëÄçÏ
 	controls = new THREE.OrbitControls( camera, element );
@@ -62,15 +61,13 @@ function init() {
 		if ( !e.alpha ) {
 			return;
 		}
-		
+		controls = new THREE.DeviceOrientationControls(camera_doc, true);
+		controls.connect();
+		controls.update();
 		camera_defx=camera_doc.rotation.x;
 		camera_defy=camera_doc.rotation.y;
 		camera_defz=camera_doc.rotation.z;
 		isGyro = true;
-	
-		controls = new THREE.DeviceOrientationControls(camera_doc, true);
-		controls.connect();
-		controls.update();
 		element.addEventListener('click', fullscreen, false);
 		window.removeEventListener('deviceorientation', setOrientationControls, true);
 		}
