@@ -1,5 +1,5 @@
 var camera, renderer, camera_doc;
-var effect, controls, docControls;
+var effect, controls;
 var camera_defx, camera_defy, camera_defz;
 var isGyro = false;
 var element, container;
@@ -63,16 +63,12 @@ function init() {
 			return;
 		}
 		
-		docControls=new THREE.DeviceOrientationControls(camera_doc);
-		docControls.connect();
-
-		docControls.update();
 		camera_defx=camera_doc.rotation.x;
 		camera_defy=camera_doc.rotation.y;
 		camera_defz=camera_doc.rotation.z;
 		isGyro = true;
 	
-		controls = new THREE.DeviceOrientationControls(camera, true);
+		controls = new THREE.DeviceOrientationControls(camera_doc, true);
 		controls.connect();
 		controls.update();
 		element.addEventListener('click', fullscreen, false);
@@ -185,7 +181,7 @@ function render(dt) {
 						//test
 						//updateCamera();
 						if(isGyro){
-							docControls.update();
+							controls.update();
 							camera_defx=camera_doc.rotation.x;
 							camera_defy=camera_doc.rotation.y;
 							camera_defz=camera_doc.rotation.z;
