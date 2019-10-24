@@ -120,7 +120,8 @@ class App {
 		this.videoSphere = new THREE.Mesh( this.secondSphere , this.videoMaterial);
 		this.videoSphere.position.set(-100, 0, 0);
 		this.scene.add( this.videoSphere );
- 
+		//動画更新後、カメラの位置を正面に調整する
+		//controls.target.set( 0, 70, 20 );
 
 	}
 
