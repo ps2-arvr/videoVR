@@ -143,8 +143,12 @@ camera.position.x = this.defx;
 camera.position.y = this.defy;
 camera.position.z = this.defz;
 }
-function updatacamera(){
+function updateCamera(){
 	if(isGyro){
+	var camera_nowx=camera_doc.rotation.x;
+	var camera_nowy=camera_doc.rotation.y;
+	var camera_nowz=camera_doc.rotation.z;
+
 		camera.rotation.x=(camera_defx-camera_nowx)*-1;
 		camera.rotation.y=(camera_defy-camera_nowy)*-1;
 		camera.rotation.z=(camera_defz-camera_nowz)*-1;
@@ -167,7 +171,7 @@ function render(dt) {
 				//青い円弧の生成関数
   				createBlueTorus();
 					//円弧が頂点に到達した時を判定し、indexに渡す配列番号を更新する
-					if(arcLen<-6.5){
+					if(arcLen<-1.5){
 						videoNumber++;
 							//indexに渡される引数" j "の限界値判定
 							if( videoNumber == 4 ){
@@ -176,7 +180,7 @@ function render(dt) {
 						//app.js内のビデオ更新関数を呼び出し、円弧を初期化する
 						app.updateVideoTexture( videoNumber );
 						//test
-						updatacamera();
+						updateCamera();
 
 						defaultPosition();
 						arcLen = 0;
