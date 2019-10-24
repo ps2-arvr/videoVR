@@ -135,12 +135,9 @@ function disposeTorus(){
 	}
 }
 function defaultPosition(){
-	if(isGyro == false){
-		camera.position.x = this.defx;
-		camera.position.y = this.defy;
-		camera.position.z = this.defz;
-	}
-
+	camera.position.x = this.defx;
+	camera.position.y = this.defy;
+	camera.position.z = this.defz;
 }
 function updateCamera(){
 	if(isGyro){
