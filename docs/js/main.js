@@ -139,15 +139,18 @@ function disposeTorus(){
 	}
 }
 function defaultPosition(){
-camera.position.x = this.defx;
-camera.position.y = this.defy;
-camera.position.z = this.defz;
+	if(!isGyro){
+		camera.position.x = this.defx;
+		camera.position.y = this.defy;
+		camera.position.z = this.defz;
+	}
+
 }
 function updateCamera(){
 	if(isGyro){
-	var camera_nowx=camera_doc.rotation.x;
-	var camera_nowy=camera_doc.rotation.y;
-	var camera_nowz=camera_doc.rotation.z;
+		var camera_nowx=camera_doc.position.x;
+		var camera_nowy=camera_doc.rotation.y;
+		var camera_nowz=camera_doc.rotation.z;
 
 		camera.rotation.x=(camera_defx-camera_nowx)*-1;
 		camera.rotation.y=(camera_defy-camera_nowy)*-1;
