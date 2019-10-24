@@ -1,7 +1,5 @@
-var camera, renderer, camera_doc;
+var camera, renderer;
 var effect, controls;
-var camera_defx, camera_defy, camera_defz;
-var isGyro = false;
 var element, container;
 var clock = new THREE.Clock();
 var scene = new THREE.Scene();
@@ -40,10 +38,6 @@ function init() {
 	this.defz =100 * Math.sin( phi ) * Math.sin( theta );
 	
 	scene.add( camera );
-	//test
-	camera_doc=new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10000);
-	camera_doc.position.set(this.defx,this.defy,this.defz);
-
 	//camera.lookAt(new THREE.Vector3(10, 0, 0));
 	//マウス操作
 	controls = new THREE.OrbitControls( camera, element );
@@ -61,13 +55,9 @@ function init() {
 		if ( !e.alpha ) {
 			return;
 		}
-		controls = new THREE.DeviceOrientationControls(camera_doc, true);
+		controls = new THREE.DeviceOrientationControls(camera, true);
 		controls.connect();
 		controls.update();
-		camera_defx=camera_doc.rotation.x;
-		camera_defy=camera_doc.rotation.y;
-		camera_defz=camera_doc.rotation.z;
-		isGyro = true;
 		element.addEventListener('click', fullscreen, false);
 		window.removeEventListener('deviceorientation', setOrientationControls, true);
 		}
@@ -132,20 +122,9 @@ function disposeTorus(){
 	}
 }
 function defaultPosition(){
-	camera.position.x = this.defx;
-	camera.position.y = this.defy;
-	camera.position.z = this.defz;
-}
-function updateCamera(){
-	if(isGyro){
-		var camera_nowx=camera_doc.rotation.x;
-		var camera_nowy=camera_doc.rotation.y;
-		var camera_nowz=camera_doc.rotation.z;
-
-		camera.rotation.x=(camera_defx-camera_nowx)*-1;
-		camera.rotation.y=(camera_defy-camera_nowy)*-1;
-		camera.rotation.z=(camera_defz-camera_nowz)*-1;
-	}
+camera.position.x = this.defx;
+camera.position.y = this.defy;
+camera.position.z = this.defz;
 }
 function render(dt) {
 	//ホットスポットに注視点を合わせた時の処理
@@ -164,7 +143,7 @@ function render(dt) {
 				//青い円弧の生成関数
   				createBlueTorus();
 					//円弧が頂点に到達した時を判定し、indexに渡す配列番号を更新する
-					if(arcLen<-1.5){
+					if(arcLen<-6.5){
 						videoNumber++;
 							//indexに渡される引数" j "の限界値判定
 							if( videoNumber == 4 ){
@@ -172,15 +151,6 @@ function render(dt) {
 							}
 						//app.js内のビデオ更新関数を呼び出し、円弧を初期化する
 						app.updateVideoTexture( videoNumber );
-						//test
-						//updateCamera();
-						if(isGyro){
-							controls.update();
-							camera_defx=camera_doc.rotation.x;
-							camera_defy=camera_doc.rotation.y;
-							camera_defz=camera_doc.rotation.z;
-						}
-
 						defaultPosition();
 						arcLen = 0;
 						}
@@ -219,7 +189,6 @@ function render(dt) {
 			}
 	}
 	app.render(dt);
-	updateCamera();
 	effect.render( scene, camera );
 }
 function animate(t) {
