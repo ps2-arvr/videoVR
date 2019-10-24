@@ -1,5 +1,7 @@
 var camera, renderer;
-var effect, controls;
+var effect, controls, docControls;
+var camera_defx, camera_defy, camera_defz;
+var isGyro = false;
 var element, container;
 var clock = new THREE.Clock();
 var scene = new THREE.Scene();
@@ -38,6 +40,11 @@ function init() {
 	this.defz =100 * Math.sin( phi ) * Math.sin( theta );
 	
 	scene.add( camera );
+	//test
+	camera_doc=new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.1, 10000);
+	camera_doc.position.set(0,0,0.01);
+	camera_doc.lookAt(new THREE.Vector3(0,0,0));
+	
 	//camera.lookAt(new THREE.Vector3(10, 0, 0));
 	//マウス操作
 	controls = new THREE.OrbitControls( camera, element );
@@ -55,6 +62,16 @@ function init() {
 		if ( !e.alpha ) {
 			return;
 		}
+		
+		docControls=new THREE.DeviceOrientationControls(camera_doc);
+		docControls.connect();
+
+		docControls.update();
+		camera_defx=camera_doc.rotation.x;
+		camera_defy=camera_doc.rotation.y;
+		camera_defz=camera_doc.rotation.z;
+		isGyro = true;
+	
 		controls = new THREE.DeviceOrientationControls(camera, true);
 		controls.connect();
 		controls.update();
@@ -126,6 +143,13 @@ camera.position.x = this.defx;
 camera.position.y = this.defy;
 camera.position.z = this.defz;
 }
+function updatacamera(){
+	if(isGyro){
+		camera.rotation.x=(camera_defx-camera_nowx)*-1;
+		camera.rotation.y=(camera_defy-camera_nowy)*-1;
+		camera.rotation.z=(camera_defz-camera_nowz)*-1;
+	}
+}
 function render(dt) {
 	//ホットスポットに注視点を合わせた時の処理
 	//camera.rotation.y = 5.2 ;
@@ -151,6 +175,9 @@ function render(dt) {
 							}
 						//app.js内のビデオ更新関数を呼び出し、円弧を初期化する
 						app.updateVideoTexture( videoNumber );
+						//test
+						updatacamera();
+
 						defaultPosition();
 						arcLen = 0;
 						}
