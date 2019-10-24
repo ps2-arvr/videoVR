@@ -183,7 +183,13 @@ function render(dt) {
 						//app.js内のビデオ更新関数を呼び出し、円弧を初期化する
 						app.updateVideoTexture( videoNumber );
 						//test
-						updateCamera();
+						//updateCamera();
+						if(isGyro){
+							docControls.update();
+							camera_defx=camera_doc.rotation.x;
+							camera_defy=camera_doc.rotation.y;
+							camera_defz=camera_doc.rotation.z;
+						}
 
 						defaultPosition();
 						arcLen = 0;
@@ -223,6 +229,7 @@ function render(dt) {
 			}
 	}
 	app.render(dt);
+	updateCamera();
 	effect.render( scene, camera );
 }
 function animate(t) {
