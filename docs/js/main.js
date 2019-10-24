@@ -1,4 +1,4 @@
-var camera, renderer;
+var camera, renderer, camera_doc;
 var effect, controls, docControls;
 var camera_defx, camera_defy, camera_defz;
 var isGyro = false;
@@ -148,7 +148,7 @@ function defaultPosition(){
 }
 function updateCamera(){
 	if(isGyro){
-		var camera_nowx=camera_doc.position.x;
+		var camera_nowx=camera_doc.rotation.x;
 		var camera_nowy=camera_doc.rotation.y;
 		var camera_nowz=camera_doc.rotation.z;
 
