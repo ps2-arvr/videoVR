@@ -139,7 +139,7 @@ function disposeTorus(){
 	}
 }
 function defaultPosition(){
-	if(!isGyro){
+	if(isGyro == false){
 		camera.position.x = this.defx;
 		camera.position.y = this.defy;
 		camera.position.z = this.defz;
