@@ -143,7 +143,7 @@ function render(dt) {
 				//青い円弧の生成関数
   				createBlueTorus();
 					//円弧が頂点に到達した時を判定し、indexに渡す配列番号を更新する
-					if(arcLen<-1.5){
+					if(arcLen<-6.5){
 						videoNumber++;
 							//indexに渡される引数" j "の限界値判定
 							if( videoNumber == 4 ){
@@ -163,7 +163,7 @@ function render(dt) {
 				//赤い円弧の生成関数
   				createRedTorus();
 					//円弧が頂点に到達した時を判定し、動画名をパラメータに渡しページを更新する
-					if(arcLen<-1.5){
+					if(arcLen<-6.5){
 						videoNumber--;
 						//indexに渡される引数" j "の限界値判定
 							if( videoNumber == -1){
