@@ -14,12 +14,27 @@ class App {
 		scene.add( ambientLight );
 		
 		//キューブを生成
-		var geometryCube = new THREE.BoxGeometry(10, 10, 10);
-		var materialCube = new THREE.MeshLambertMaterial(  );
+		//--------ここにキューブ情報を書き込む--------
+//キューブを生成
+		var geometryCube = new THREE.BoxGeometry(20, 20, 20);
+		var materialCube = new THREE.MeshLambertMaterial(  { color: 0x00ff88 } );
+		
+		var materials = [
+          	new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture("./img/dice1.png")}),
+          	new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture("./img/dice2.png")}),
+          	new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture("./img/dice3.png")}),
+          	new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture("./img/dice4.png")}),
+          	new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture("./img/diceFive.png")}),
+          	new THREE.MeshLambertMaterial({map:THREE.ImageUtils.loadTexture("./img/dice6.png")}),
+      		 ];
+       	var materialCube = new THREE.MeshFaceMaterial(materials);
+       	
 		this.meshCube = new THREE.Mesh( geometryCube, materialCube );
 		this.meshCube.position.set(-30, 60, 0);
 		this.scene.add( this.meshCube );
 		
+		
+		//--------------------------------------------
 		
 		//ホットスポットを生成
 		var material = new THREE.MeshBasicMaterial( { color: 0xBAD3FF } );
