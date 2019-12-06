@@ -12,25 +12,28 @@ class App {
 
 		var ambientLight = new THREE.AmbientLight(0xEFFBFB);
 		scene.add( ambientLight );
-
-		//URLから動画パラメータを取得し、paramに保存する
-		//使わないかもしれないのでコメントアウト
-		//var param = location.search
-		//param = param.replace("?", "");
-
+		
+		//キューブを生成
+		var geometryCube = new THREE.BoxGeometry(10, 10, 10);
+		var materialCube = new THREE.MeshLambertMaterial(  );
+		this.meshCube = new THREE.Mesh( geometryCube, materialCube );
+		this.meshCube.position.set(-30, 60, 0);
+		this.scene.add( this.meshCube );
+		
+		
 		//ホットスポットを生成
 		var material = new THREE.MeshBasicMaterial( { color: 0xBAD3FF } );
-      		this.mesh =new THREE.Mesh( new THREE.CircleGeometry( 30, 3, Math.PI / 1.5 ), material );
+      	this.mesh =new THREE.Mesh( new THREE.CircleGeometry( 30, 3, Math.PI / 1.5 ), material );
 		this.mesh.position.set(-30, 60, -230);
-     		scene.add( this.mesh );
+     	scene.add( this.mesh );
 		this.mesh.name='loadTorus';
 		
 
 		//ホットスポットを生成
 		var material = new THREE.MeshBasicMaterial( { color: 0xF7B897 } );
-      		this.secondMesh =new THREE.Mesh( new THREE.CircleGeometry( 30, 3, Math.PI / 1.5 ), material );
+      	this.secondMesh =new THREE.Mesh( new THREE.CircleGeometry( 30, 3, Math.PI / 1.5 ), material );
 		this.secondMesh.position.set(-30, 60, 230);
-     		scene.add( this.secondMesh );
+     	scene.add( this.secondMesh );
 		this.secondMesh.name='secondLoad';
 
                 var select = document.getElementById( 'video_src' );
@@ -38,6 +41,7 @@ class App {
                   video.src = select.value;
                   video.play();
                 } );
+
                 // video 要素を生成
                 var video = document.createElement( 'video' );
                 video.crossOrigin = 'anonymous';
@@ -126,6 +130,9 @@ class App {
 	}
 
 	update(dt) {
+		this.meshCube.rotation.x += dt * 0.8
+		this.meshCube.rotation.z += dt * 0.2
+		this.meshCube.rotation.y += dt * 0.2
 
 	}
 	render(dt) {
